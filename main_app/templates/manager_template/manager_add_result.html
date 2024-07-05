@@ -1,0 +1,98 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                    <form method="POST">
+                        {% csrf_token %}
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <h3 class="card-title">{{page_title}}</h3>
+                    </div>
+
+       
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+
+
+                        <div class="form-group">
+                            <label>Task</label>
+                            <select name="task" class="form-control" id='task'>
+                                <option value="">----</option>
+                                {% for task in tasks  %}
+                                <option value="{{task.id}}">{{task.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="button" id='fetch_projectEngineer' class="btn btn-primary btn-block">Fetch
+                            Project Engineers</button>
+                        <div class="form-group" id="projectEngineer_data">
+
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+
+       
+        $("#fetch_projectEngineer").click(function () {
+            var task = $("#task").val()
+            $("#projectEngineer_data").html(null)
+if (task.length  == 0){
+    alert("Please select task");
+    return false;
+}
+            $.ajax({
+                url: "{% url 'get_projectEngineers' %}",
+                type: 'POST',
+                data: {
+                    task: task
+                }
+            }).done(function (response) {
+                var json_data = JSON.parse(response)
+                if (json_data.length < 1) {
+                    alert("No data to display")
+                } else {
+                    var div_data = "<hr/><div class='form-group'> <label> ProjectEngineer List</label> <select class='projectEngineer_list form-control' name='projectEngineer_list'> "
+
+                    for (key in json_data) {
+                        div_data += "<option value='" + json_data[key]['id'] + "'>" + json_data[key]['name'] + " </option>"
+                    }
+                    div_data += "</select></div>"
+                    div_data += "<div class='form-group row'> <div class='col-md-6'> <label> Weekly Score </label> <input class='form-control' name='weekly' placeholder='Weekly Score' max='40' min='0' required type='number' /></div><div class='col-md-6'><label> Monthly Score </label>  <input class='form-control' placeholder='Monthly Score'  name='monthly' max='60' min='0' required type='number' /> </div></div><div class='form-group'><button id='save_attendance' class='btn btn-success' type='submit'>Save Result</button></div></div>"
+                    $("#projectEngineer_data").html(div_data)
+                }
+            }).fail(function (response) {
+                alert("Error in fetching projectEngineers")
+            })
+
+
+
+
+        })
+    })
+</script>
+{% endblock custom_js %}

@@ -1,0 +1,132 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                    <form method="POST">
+                        {% csrf_token %}
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <h3 class="card-title">{{page_title}}</h3>
+                    </div>
+
+       
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+
+
+                     
+
+                 {{ form }}
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" id='update_result' class="btn btn-primary btn-block">Update Result</button>
+               
+                    </div>
+                </form>
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        $("#id_task").change(function () {
+            fetchProjectEngineers();
+            });
+   $("#id_projectEngineer").change(function () {
+    fetch_projectEngineer_result();
+                });
+                $("#id_monthly").hide()
+                $("#id_weekly").hide()
+                $("#update_result").hide()
+                $('label[for="id_weekly"]').hide();
+                $('label[for="id_monthly"]').hide();
+        function fetchProjectEngineers(){
+            var task = $("#id_task").val()
+            $("#id_projectEngineer").html(null)
+            if (task.length == 0 || task < 1){
+                return false;
+            }
+            $.ajax({
+                url: "{% url 'get_projectEngineers' %}",
+                type: 'POST',
+                data: {
+                    task: task
+                }
+            }).done(function (response) {
+                var json_data = JSON.parse(response)
+                if (json_data.length < 1) {
+                    alert("No data to display")
+                } else {
+                    var div_data = "<option>Select ProjectEngineer</option>"
+
+                    for (key in json_data) {
+                        div_data += "<option value='" + json_data[key]['id'] + "'>" + json_data[key]['name'] + " </option>"
+                    }
+             
+                    $("#id_projectEngineer").html(div_data)
+                }
+            }).fail(function (response) {
+                alert("Error in fetching projectEngineers")
+            })
+               }
+
+               function fetch_projectEngineer_result(){
+                var projectEngineer = $("#id_projectEngineer").val()
+                var task = $("#id_task").val()
+                $("#id_weekly").val(null)
+                $("#id_monthly").val(null)
+                $("#id_monthly").hide()
+                $("#update_result").hide()
+                $("#id_weekly").hide()
+                $('label[for="id_weekly"]').hide();
+                $('label[for="id_monthly"]').hide();
+                if (projectEngineer.length  == 0 || task.length == 0 || projectEngineer < 1 || task < 1){
+                    return false;
+                }
+                $.ajax({
+                    url: "{% url 'fetch_projectEngineer_result' %}",
+                    type: 'POST',
+                    data: {
+                        task: task,
+                        projectEngineer:projectEngineer
+                    }
+                }).done(function (response) {
+                    if (response == 'False') {
+                        alert("No data to display")
+                    } else {
+                        var json_data = JSON.parse(response)
+                        
+                            $("#id_weekly").val(json_data['weekly'])
+                            $("#id_monthly").val(json_data['monthly'])
+                            $("#id_monthly").show()
+                            $("#id_weekly").show()
+                            $("#update_result").show()
+                            $('label[for="id_weekly"]').show();
+                            $('label[for="id_monthly"]').show();
+
+                    }
+                }).fail(function (response) {
+                    alert("Error in fetching projectEngineers")
+                })
+               }
+
+    })
+</script>
+{% endblock custom_js %}
