@@ -145,7 +145,6 @@ def manager_notify_projectEngineer(request):
     return render(request, "manager_template/projectEngineer_notification.html", context)
 
 
-
 def manager_take_attendance(request):
     manager = get_object_or_404(Manager, admin=request.user)
     tasks = Task.objects.filter(manager=manager)
@@ -155,6 +154,43 @@ def manager_take_attendance(request):
     }
 
     return render(request, 'manager_template/manager_take_attendance.html', context)
+
+
+def manage_task(request):
+    manager = get_object_or_404(Manager, admin=request.user)
+    tasks = Task.objects.filter(manager=manager)
+    context = {
+        'tasks': tasks,
+        'page_title': 'Manage Tasks'
+    }
+    return render(request, "manager_template/manage_task.html", context)
+
+def edit_task(request, task_id):
+    instance = get_object_or_404(Task, id=task_id)
+    form = TaskForm(request.POST or None, instance=instance)
+    context = {
+        'form': form,
+        'task_id': task_id,
+        'page_title': 'Edit Task'
+    }
+    if request.method == 'POST':
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            track = form.cleaned_data.get('track')
+            manager = form.cleaned_data.get('manager')
+            try:
+                task = Task.objects.get(id=task_id)
+                task.name = name # type: ignore
+                task.manager = manager # type: ignore
+                task.track = track # type: ignore
+                task.save()
+                messages.success(request, "Successfully Updated")
+                return redirect(reverse('manager_edit_task', args=[task_id]))
+            except Exception as e:
+                messages.error(request, "Could Not Add " + str(e))
+        else:
+            messages.error(request, "Fill Form Properly")
+    return render(request, 'manager_template/edit_task_template.html', context)
 
 
 @csrf_exempt

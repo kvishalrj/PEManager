@@ -62,6 +62,8 @@ urlpatterns = [
 
     # Manager
     path("manager/home/", manager_views.manager_home, name='manager_home'),
+    path("manager/task/manage/", manager_views.manage_task, name='manager_manage_task'),
+    path("manager/task/edit/<int:task_id>", manager_views.edit_task, name='manager_edit_task'),
 
     path('manager/projectEngineer/manage/', manager_views.manage_projectEngineer, name='manager_manage_projectEngineer'),
     path("manager/projectEngineer/add/", manager_views.add_projectEngineer,name='manager_add_projectEngineer'),
