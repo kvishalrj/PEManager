@@ -156,7 +156,7 @@ class CalendarViewNew(generic.View):
             form = forms.save(commit=False)
             form.user = request.user
             form.save()
-            return redirect("calendar/calendarapp/calendar")
+            return redirect("/calendar")
         context = {"form": forms}
         return render(request, self.template_name, context)
 
