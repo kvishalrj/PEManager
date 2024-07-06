@@ -3,23 +3,12 @@
     {% load static %}
     <head>
         <meta name="description" content="Event Dashboard" />
-        <!-- Twitter meta-->
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:site" content="@sajib1066" />
-        <meta property="twitter:creator" content="@sajib1066" />
-        <!-- Open Graph Meta-->
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Vali Admin" />
-        <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme" />
-        {% comment %} <meta property="og:url" content="https://sajib1066.github.io/" />
-        <meta property="og:image" content="https://sajib1066.github.io/images/me.jpg" /> {% endcomment %}
-        <meta property="og:description" content="Event Dashboard" />
         <title>{% block title %}{% endblock title  %}</title>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!-- Main CSS-->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'calendar/css/main.css' %}" />
         <!-- Font-icon css-->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
         {% block extracss %}
@@ -116,7 +105,7 @@
                     </ul>
                 </li>
                 <!-- User Menu-->
-                <li class="dropdown">
+                {% comment %} <li class="dropdown">
                     <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
                     <ul class="dropdown-menu settings-menu dropdown-menu-right">
                         <li>
@@ -129,22 +118,38 @@
                             <a class="dropdown-item" href="{% url 'accounts:signout' %}"><i class="fa fa-sign-out fa-lg"></i> Sign Out</a>
                         </li>
                     </ul>
-                </li>
+                </li> {% endcomment %}
             </ul>
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
             <div class="app-sidebar__user">
-                <img class="app-sidebar__user-avatar" src="{% static "images/profile.png" %}" alt="User Image" height="50px" width="50px"/>
+                {% if manager.profile_pic == ""  %}
+                <img class="app-sidebar__user-avatar" src="{% static "calendar/images/profile.png" %}" alt="User Image" height="50px" width="50px"/>
+                                        {% else %}
+                                        <img class="app-sidebar__user-avatar" alt="User Image" height="50px" width="50px"
+                                            src="{{user.profile_pic}}">
+                                        {% endif %}
                 <div>
-                    <p class="app-sidebar__user-name">Vishal Kumar</p>
-                    <p class="app-sidebar__user-designation">Software Engineer</p>
+                    <p class="app-sidebar__user-name">{{user.first_name}} {{user.last_name}}</p>
+                    <p class="app-sidebar__user-designation">
+                        {% if user.user_type == '1' %}
+                            Admin
+                        {% elif user.user_type == '2' %}
+                            Manager
+                        {% else %}
+                            Project Engineer
+                        {% endif %}
+                    </p>
                 </div>
             </div>
             <ul class="app-menu">
                 <li>
-                    <a class="app-menu__item active" href="{% url 'dashboard' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a>
+                    <a class="app-menu__item" href="/"><i class="app-menu__icon fa fa-home"></i><span class="app-menu__label">Home</span></a>
+                </li>
+                <li>
+                    <a class="app-menu__item active" href="/calendar/dashboard"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a>
                 </li>
                 <li>
                     <a class="app-menu__item" href="{% url 'calendarapp:calendar' %}"><i class="app-menu__icon fa fa-calendar"></i><span class="app-menu__label">Calendar</span></a>
@@ -177,7 +182,7 @@
             {% endblock content %}
         </main>
         <!-- Essential javascripts for application to work-->
-        {% include 'base/js.html' %}
+        {% include 'calendar/base/js.html' %}
         {% block extrascripts %}
         {% endblock extrascripts %}
     </body>

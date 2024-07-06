@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from calendarapp.models import EventMember, Event 
 from calendarapp.utils import Calendar
 from calendarapp.forms import EventForm, AddMemberForm
+from django.views.generic import View
 
 
 def get_date(req_day):
@@ -37,10 +38,26 @@ def next_month(d):
     return month
 
 
-class CalendarView(LoginRequiredMixin, generic.ListView):
-    login_url = "accounts:signin"
+class DashboardView(View):
+    # login_url = "accounts:signin"
+    template_name = "calendar/calendarapp/dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        events = Event.objects.get_all_events(user=request.user) # type: ignore
+        running_events = Event.objects.get_running_events(user=request.user) # type: ignore
+        latest_events = Event.objects.filter(user=request.user).order_by("-id")[:10]
+        context = {
+            "total_event": events.count(),
+            "running_events": running_events,
+            "latest_events": latest_events,
+        }
+        return render(request, self.template_name, context)
+
+
+class CalendarView(generic.ListView):
+    # login_url = "accounts:signin"
     model = Event
-    template_name = "calendar.html"
+    template_name = "calendar/calendar.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,7 +70,7 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-@login_required(login_url="signup")
+# @login_required(login_url="signup")
 def create_event(request):
     form = EventForm(request.POST or None)
     if request.POST and form.is_valid():
@@ -68,22 +85,22 @@ def create_event(request):
             start_time=start_time,
             end_time=end_time,
         )
-        return HttpResponseRedirect(reverse("calendarapp:calendar"))
-    return render(request, "event.html", {"form": form})
+        return HttpResponseRedirect(reverse("calendar/calendarapp/calendar"))
+    return render(request, "calendar/event.html", {"form": form})
 
 
 class EventEdit(generic.UpdateView):
     model = Event
     fields = ["title", "description", "start_time", "end_time"]
-    template_name = "event.html"
+    template_name = "calendar/event.html"
 
 
-@login_required(login_url="signup")
+# @login_required(login_url="signup")
 def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
     eventmember = EventMember.objects.filter(event=event)
     context = {"event": event, "eventmember": eventmember}
-    return render(request, "event-details.html", context)
+    return render(request, "calendar/event-details.html", context)
 
 
 def add_eventmember(request, event_id):
@@ -96,21 +113,21 @@ def add_eventmember(request, event_id):
             if member.count() <= 9:
                 user = forms.cleaned_data["user"]
                 EventMember.objects.create(event=event, user=user)
-                return redirect("calendarapp:calendar")
+                return redirect("calendar/calendarapp/calendar")
             else:
                 print("--------------User limit exceed!-----------------")
     context = {"form": forms}
-    return render(request, "add_member.html", context)
+    return render(request, "calendar/add_member.html", context)
 
 
 class EventMemberDeleteView(generic.DeleteView):
     model = EventMember
-    template_name = "event_delete.html"
-    success_url = reverse_lazy("calendarapp:calendar")
+    template_name = "calendar/event_delete.html"
+    success_url = reverse_lazy("calendar/calendarapp/calendar")
 
-class CalendarViewNew(LoginRequiredMixin, generic.View):
+class CalendarViewNew(generic.View):
     # login_url = "accounts:signin"
-    template_name = "calendar/templates/calendarapp/calendar.html"
+    template_name = "calendar/calendarapp/calendar.html"
     form_class = EventForm
 
     def get(self, request, *args, **kwargs):
@@ -139,7 +156,7 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
             form = forms.save(commit=False)
             form.user = request.user
             form.save()
-            return redirect("calendarapp:calendar")
+            return redirect("calendar/calendarapp/calendar")
         context = {"form": forms}
         return render(request, self.template_name, context)
 

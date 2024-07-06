@@ -1,12 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'calendar/base.html' %}
 
 {% block title %}
-Add EventMember
+Event
 {% endblock %}
 
 {% block content %}
 <div class="clearfix">
-  <a class="btn btn-info left" href="{% url 'calendarapp:calendar' %}"> Calendar </a>
+  <a class="btn btn-info left" href="{% url 'calendar/calendarapp/calendar' %}"> Calendar </a>
 </div>
 
 <form method="post">

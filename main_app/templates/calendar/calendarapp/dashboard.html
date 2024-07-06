@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'calendar/base/base.html' %}
 {% load static %}
 
 {% block title %}Event Dashboard{% endblock title %}
@@ -91,7 +91,7 @@
 {% endblock content %}
 
 {% block extrascripts %}
-    <script type="text/javascript" src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/plugins/dataTables.bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calendar/js/plugins/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calendar/js/plugins/dataTables.bootstrap.min.js' %}"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
 {% endblock extrascripts %}
