@@ -100,8 +100,6 @@
 
 ### 4. Configure the database:
 
-- No need to configure database. I have provided the credentilas of my own database for just testing pupose but if you want to use your own database you can. 
-
 - Update the DATABASES setting in settings.py with your PostgreSQL database details.
 
 ### 5. Run migrations:
