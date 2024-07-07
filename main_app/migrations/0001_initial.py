@@ -12,7 +12,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0018_remove_user_is_staff_user_is_manager'),
     ]
 
     operations = [
