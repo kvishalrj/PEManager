@@ -34,13 +34,13 @@ class CustomUser(AbstractUser):
     USER_TYPE = ((1, "HOD"), (2, "Manager"), (3, "ProjectEngineer"))
     GENDER = [("M", "Male"), ("F", "Female")]
     
-    username = None  # Removed username, using email instead
+    username = None  
     email = models.EmailField(unique=True)
     user_type = models.CharField(default=1, choices=USER_TYPE, max_length=1) # type: ignore
     gender = models.CharField(max_length=1, choices=GENDER)
     profile_pic = models.ImageField()
     address = models.TextField()
-    fcm_token = models.TextField(default="")  # For firebase notifications
+    fcm_token = models.TextField(default="") 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     USERNAME_FIELD = "email"

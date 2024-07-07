@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # My Apps
-    # 'main_app.apps.MainAppConfig'
     'main_app',
     'calendarapp'
 
@@ -98,6 +97,7 @@ WSGI_APPLICATION = 'PEManager.wsgi.application'
 #     }
 # }
 
+AUTH_USER_MODEL = 'main_app.CustomUser'
 
 DATABASES = {
   'default': {
