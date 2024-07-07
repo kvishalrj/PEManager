@@ -115,7 +115,7 @@
 - python manage.py runserver
 
 >## Usage
-Access the admin interface at http://127.0.0.1:8000/admin/ to manage users and tasks.
+Access the login at http://127.0.0.1:8000 
 Each user (admin, manager, project engineer) can log in and access their respective dashboards and functionalities.
 
 >## Contributing
