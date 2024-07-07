@@ -1,5 +1,5 @@
 mysql-connector==2.2.9
-virtualenv==20.0.31
+virtualenv==20.24.2
 whitenoise==5.2.0
 requests==2.31.0
 gunicorn==22.0.0
@@ -12,7 +12,7 @@ psycopg2-binary==2.9.9
 python-decouple==3.8
 python-dotenv==1.0.1
 pytz==2023.3.post1
-sqlparse==0.4.4
+sqlparse==0.2.4
 tk==0.1.0
 typing_extensions==4.9.0
 tzdata==2023.3
