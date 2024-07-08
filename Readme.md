@@ -84,36 +84,45 @@
 
 ### 1. Clone the repository:
 
-```bash
+    ```bash
     git clone https://github.com/kvishalrj/PEManager.git
     cd PEManager
     ```
 
 ### 2. Set up a virtual environment:
 
-- python3 -m venv venv
-
-- source venv/bin/activate
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
 
 ### 3. Install the dependencies:
 
-- pip install -r requirements.txt
-
+    ```bash
+    pip install -r requirements.txt
+    ```
+    
 ### 4. Configure the database:
 
-- Update the DATABASES setting in settings.py with your PostgreSQL database details.
+- Update the DATABASES setting in settings.py with your PostgreSQL database details or you can also use built in SQLite database.
 
 ### 5. Run migrations:
 
-- python manage.py migrate
-
+    ```bash
+    python manage.py migrate
+    ```
+    
 ### 6. Create a superuser:
 
-- python manage.py createsuperuser
-
+    ```bash
+    python manage.py createsuperuser
+    ```
+    
 ### 7. Start the development server:
 
-- python manage.py runserver
+    ```bash
+    python manage.py runserver
+    ```
 
 >## Usage
 - Access the login at http://127.0.0.1:8000 
