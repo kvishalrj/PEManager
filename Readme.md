@@ -84,9 +84,10 @@
 
 ### 1. Clone the repository:
 
-- git clone https://github.com/kvishalrj/PEManager.git
-
-- cd PEManager
+```bash
+    git clone https://github.com/kvishalrj/PEManager.git
+    cd PEManager
+    ```
 
 ### 2. Set up a virtual environment:
 
