@@ -84,23 +84,23 @@
 
 ### 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/kvishalrj/PEManager.git
-    cd PEManager
-    ```
+```bash
+git clone https://github.com/kvishalrj/PEManager.git
+cd PEManager
+```
 
 ### 2. Set up a virtual environment:
 
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
 ### 3. Install the dependencies:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+pip install -r requirements.txt
+```
     
 ### 4. Configure the database:
 
@@ -108,21 +108,21 @@
 
 ### 5. Run migrations:
 
-    ```bash
-    python manage.py migrate
-    ```
+```bash
+python manage.py migrate
+```
     
 ### 6. Create a superuser:
 
-    ```bash
-    python manage.py createsuperuser
-    ```
+```bash
+python manage.py createsuperuser
+```
     
 ### 7. Start the development server:
 
-    ```bash
-    python manage.py runserver
-    ```
+```bash
+python manage.py runserver
+```
 
 >## Usage
 - Access the login at http://127.0.0.1:8000 
